@@ -1,0 +1,9 @@
+ Estructura del Repositorio
+
+Presento a continuación la distribución de los scripts en Python correspondientes a esta sección del proyecto.
+
+┣ 📄 cajero-parqueo.py    
+┣ 📄 calificacion.py       
+┣ 📄 factura_restau.py     
+┣ 📄 pyramid.py           
+┗ 📄 validacion-pin.py     
