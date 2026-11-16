@@ -1,0 +1,12 @@
+# 📂 Estructura del Repositorio
+
+Organizo y presento a continuación la distribución de los archivos y carpetas, facilitando la ubicación de cada script y recurso de desarrollo.
+
+┣ 📂 diagramas/          # Carpeta destinada a diagramas de flujo y arquitectura
+┣ 📂 retos_moodle/       # Carpeta que almacena los retos y ejercicios prácticos de Moodle
+┣ 📄 cuenta              
+┣ 📄 EdadEnDias         
+┣ 📄 promedioNotas      
+┣ 📄 README              
+┣ 📄 saludo              
+┗ 📄 total_subtotal     
