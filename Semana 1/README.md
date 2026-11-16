@@ -1,2 +1,2 @@
-Alogitmia
+Algoritmia 
 
