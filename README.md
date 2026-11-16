@@ -12,14 +12,16 @@ Este repositorio recopila los proyectos, retos y scripts desarrollados a lo larg
     ┃   ┣ 📄 saludo             
     ┃   ┗ 📄 total_subtotal      
     ┃
-    ┣ 📂 Semana 2/              
+    ┣ 📂 Semana 2/      
+    ┣   ┣ 📂 retos_moodle/   
     ┃   ┣ 📄 bisiesto.py        
     ┃   ┣ 📄 edad.py            
     ┃   ┣ 📄 parqueadero.py     
     ┃   ┣ 📄 registro.py        
     ┃   ┗ 📄 semaforo.py         
     ┃
-    ┗ 📂 Semana 3/              
+    ┗ 📂 Semana 3/ 
+        ┣ 📂 retos_moodle/   
         ┣ 📄 cajero-parqueo.py   
         ┣ 📄 calificacion.py    
         ┣ 📄 factura_restau.py 
