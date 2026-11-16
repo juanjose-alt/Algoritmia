@@ -1,0 +1,9 @@
+Estructura del Repositorio
+
+Presento a continuación la distribución de los scripts en Python que componen esta sección del repositorio.
+
+┣ 📄 bisiesto.py     # Script para calcular si un año determinado es bisiesto
+┣ 📄 edad.py         # Script para el cálculo y validación de edades
+┣ 📄 parqueadero.py  # Módulo de simulación o control de tarifas/espacios de un parqueadero
+┣ 📄 registro.py     # Script orientado al registro de un usuario
+┗ 📄 semaforo.py     # Lógica de simulación o control de estados de un semáforo para un producto en una tienda 
