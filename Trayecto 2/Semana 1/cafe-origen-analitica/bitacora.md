@@ -19,3 +19,80 @@ arranqué con este reto. Estuve revisando los datos antes de tirar código o fó
 - El "medellín" con minúscula en el registro 5: en casi todos dice "Medellín" con mayúscula. Para JavaScript eso cuenta como cosas distintas, así que tengo que unificarlo en la limpieza.
 - La cantidad 0 en el registro 8: el cliente C06 compró en Cali pero la cantidad es cero. ¿Fue un error al escribir el reporte o una venta cancelada? Hay que tener cuidado con esto al calcular totales de unidades o ingresos.
 - Clientes repetidos en fechas distintas: al principio pensé que cada cliente salía una sola vez en todo el archivo, pero el C01 aparece varias veces. Esto es un historial de transacciones, no una lista de usuarios únicos.
+
+
+
+Nov 23-2026 
+
+** Pseudocodigo de cada indicador(pseint): **
+
+// 1. Calcular el valor de una venta individual
+SubProceso resultado <- valorVenta(cantidad, precio)
+    Definir resultado Como Real
+    resultado <- cantidad * precio
+FinSubProceso
+
+// 2. Calcular el total vendido acumulando las ventas
+SubProceso total <- totalVendido(cantidades, precios, n)
+    Definir total Como Real
+    Definir i Como Entero
+    total <- 0
+    
+    Para i <- 1 Hasta n Hacer
+        total <- total + (cantidades[i] * precios[i])
+    FinPara
+FinSubProceso
+
+// 3. Calcular el total de unidades vendidas (contador/acumulador)
+SubProceso totalU <- unidadesVendidas(cantidades, n)
+    Definir totalU Como Entero
+    Definir i Como Entero
+    totalU <- 0
+    
+    Para i <- 1 Hasta n Hacer
+        // Ojo aquí: podemos ignorar o sumar según la regla del registro 8
+        totalU <- totalU + cantidades[i]
+    FinPara
+FinSubProceso
+
+// 4. Encontrar la venta mayor (patrón de máximo)
+SubProceso mayor <- ventaMayor(cantidades, precios, n)
+    Definir mayor Como Real
+    Definir i Como Entero
+    Definir actual Como Real
+    
+    Si n == 0 Entonces
+        Escribir "El arreglo está vacío"
+        mayor <- 0
+    Sino
+        mayor <- cantidades[1] * precios[1]
+        Para i <- 2 Hasta n Hacer
+            actual <- cantidades[i] * precios[i]
+            Si actual > mayor Entonces
+                mayor <- actual
+            FinSi
+        FinPara
+    FinSi
+FinSubProceso
+
+// 5. Calcular el ticket promedio (evitando división por cero)
+SubProceso promedio <- ticketPromedio(cantidades, precios, n)
+    Definir promedio, total Como Real
+    Definir ventasValidas, i Como Entero
+    
+    total <- 0
+    ventasValidas <- 0
+    
+    Para i <- 1 Hasta n Hacer
+        Si cantidades[i] > 0 Entonces
+            total <- total + (cantidades[i] * precios[i])
+            ventasValidas <- ventasValidas + 1
+        FinSi
+    FinPara
+    
+    Si ventasValidas > 0 Entonces
+        promedio <- total / ventasValidas
+    Sino
+        promedio <- 0
+    FinSi
+FinSubProceso
