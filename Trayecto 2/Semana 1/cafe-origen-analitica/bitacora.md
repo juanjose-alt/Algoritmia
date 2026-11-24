@@ -103,3 +103,16 @@ Bitácora - Reto 2 (Café Origen):
 Aprendizaje clave: Entendí cómo funciona el ciclo for...of para recorrer arreglos automáticamente sin enredos de índices (i++), viendo claramente la diferencia entre la colección (ventas) y el elemento actual (venta).
 
 Depuración: Me tropecé con un ReferenceError en ventaMayor por intentar usar la variable venta fuera de su ámbito (fuera del ciclo). Aprendí que el return debe entregar la variable del mayor y estar siempre afuera del bucle. 
+
+
+
+
+Reto 3 ======== Dia 1 
+
+Bitácora - Reto 3 (Métodos y Verificación):
+
+    Lo que me costó: Se me dificultó un poco entender cómo estructurar las comparaciones entre los ciclos y los métodos nuevos (reduce y filter), pero ver que ambos caminos llegan al mismo resultado me ayudó a aterrizar cómo funcionan por debajo.
+
+    El error tonto del día: Me comí una coma al importar las funciones en test.js justo antes de ventaMayor y por eso no me cargaba el archivo; me tocó revisar línea por línea hasta pillar el fallo de sintaxis.
+
+    Resumen de colecciones: Recorrí el arreglo ventas, filtré ciudades limpiando espacios con .trim().toLowerCase(), transformé objetos con Object.entries().map(), acumulé con .reduce() y agrupé usando objetos como diccionarios. Al final todo dio "OK" en verificar.js.

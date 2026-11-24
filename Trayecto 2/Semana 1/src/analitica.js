@@ -1,87 +1,142 @@
-const ventas = require("./datos")
-
+const ventas = require("./datos");
 
 function valorVenta(venta) {
-    return venta.cantidad * venta.precio;
+    let total = 0;
+    total = venta.cantidad * venta.precio;
+    return total;
 }
 
-
+// --- 1. Versiones con Ciclos (Para verificar.js) ---
 function totalVendido(ventas) {
     let acumulador = 0;
     for (let venta of ventas) {
-        acumulador += valorVenta(venta) 
+        acumulador += valorVenta(venta);
     }
-    return acumulador 
+    return acumulador;
 }
-
-
 
 function unidadesVendidas(ventas) {
     let acumuladorUnidades = 0; 
-
     for (let venta of ventas) {
         acumuladorUnidades += venta.cantidad; 
     }
     return acumuladorUnidades;
 }
 
-
-
-function ventaMayor (ventas) {
-    if (ventas.length === 0) {
-        return null 
-    }
-
-    let mayor = ventas[0] 
-    
+function ventasPorCiudad(ventas, ciudad) {
+    let acumuladorCiudad = 0;
+    let ciudadLimpia = ciudad.trim().toLowerCase(); 
     for (let venta of ventas) {
-        if (valorVenta(venta) > valorVenta(mayor)) {
-            mayor = venta 
+        let ciudadVenta = venta.ciudad.trim().toLowerCase(); 
+        if (ciudadVenta === ciudadLimpia){
+            acumuladorCiudad += valorVenta(venta);
         }
     }
-    return mayor 
+    return acumuladorCiudad;
 }
 
+// --- 2. Versiones con Métodos de Arreglo (Reto 3) ---
+function totalVendidoM(ventas) {
+    return ventas.reduce((acumulador, venta) => acumulador + valorVenta(venta), 0);
+}
 
+function unidadesVendidasM(ventas) {
+    return ventas.reduce((acumulador, venta) => acumulador + venta.cantidad, 0);
+}
 
-function ticketPromedio (ventas) {
+function ventasPorCiudadM(ventas, ciudad) {
+    let ciudadLimpia = ciudad.trim().toLowerCase();
+    return ventas
+        .filter(venta => venta.ciudad.trim().toLowerCase() === ciudadLimpia)
+        .reduce((acumulador, venta) => acumulador + valorVenta(venta), 0);
+}
+
+// --- Funciones de Apoyo y Reto 2 ---
+function ventaMayor(ventas) {
+    if (ventas.length === 0) {
+        return null;
+    }
+    let mayor = ventas[0]; 
+    for (let venta of ventas) {
+        if (valorVenta(venta) > valorVenta(mayor)) {
+            mayor = venta; 
+        }
+    }
+    return mayor; 
+}
+
+function ticketPromedio(ventas) {
     if (ventas.length === 0) {
         return 0;
     }
     let contadorValidas = 0; 
     for (let venta of ventas) {
         if (venta.cantidad > 0) {
-            contadorValidas += 1 
+            contadorValidas += 1; 
         }
     }
     if (contadorValidas === 0) {
         return 0;
     }
-    return totalVendido(ventas) / contadorValidas 
+    return totalVendidoM(ventas) / contadorValidas; 
 }
 
-
-function ventasPorCiudad (ventas, ciudad) {
-    let acumuladorCiudad = 0;
-    let ciudadLimpia = ciudad.trim().toLowerCase (); 
-
+// --- 3. Agrupaciones y Rankings (Reto 3) ---
+function totalPorCiudad(ventas) {
+    let resultado = {};
     for (let venta of ventas) {
-        let ciudadVenta = venta.ciudad.trim().toLowerCase(); 
-
-        if (ciudadVenta === ciudadLimpia){
-            acumuladorCiudad += valorVenta(venta);
+        let ciudad = venta.ciudad.trim();
+        if (!resultado[ciudad]) {
+            resultado[ciudad] = 0;
         }
+        resultado[ciudad] += valorVenta(venta);
     }
-        return acumuladorCiudad;
+    return resultado;
 }
 
+function unidadesPorProducto(ventas) {
+    let resultado = {};
+    for (let venta of ventas) {
+        let prod = venta.producto;
+        if (!resultado[prod]) {
+            resultado[prod] = 0;
+        }
+        resultado[prod] += venta.cantidad;
+    }
+    return resultado;
+}
 
+function topProductosPorValor(ventas, k) {
+    let totales = {};
+    for (let venta of ventas) {
+        let prod = venta.producto;
+        if (!totales[prod]) {
+            totales[prod] = 0;
+        }
+        totales[prod] += valorVenta(venta);
+    }
 
+    let lista = Object.entries(totales).map(([producto, valor]) => {
+        return { producto, valor };
+    });
+
+    return [...lista]
+        .sort((a, b) => b.valor - a.valor)
+        .slice(0, k);
+}
+
+// --- Exportaciones ---
 module.exports = {
     valorVenta,
     totalVendido,
+    totalVendidoM,
     unidadesVendidas,
+    unidadesVendidasM,
+    ventasPorCiudad,
+    ventasPorCiudadM,
     ventaMayor,
     ticketPromedio,
-    ventasPorCiudad
+    totalPorCiudad,
+    unidadesPorProducto,
+    topProductosPorValor
 };
