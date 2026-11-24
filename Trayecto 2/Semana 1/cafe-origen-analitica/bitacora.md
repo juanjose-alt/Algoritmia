@@ -116,3 +116,25 @@ Bitácora - Reto 3 (Métodos y Verificación):
     El error tonto del día: Me comí una coma al importar las funciones en test.js justo antes de ventaMayor y por eso no me cargaba el archivo; me tocó revisar línea por línea hasta pillar el fallo de sintaxis.
 
     Resumen de colecciones: Recorrí el arreglo ventas, filtré ciudades limpiando espacios con .trim().toLowerCase(), transformé objetos con Object.entries().map(), acumulé con .reduce() y agrupé usando objetos como diccionarios. Al final todo dio "OK" en verificar.js.
+
+
+
+
+
+    reto 4 ------- Dia 1
+
+    Registro de Depuración (v0.1):
+
+    El caso de Bogotá repetida dos veces:
+
+        ¿Qué pasaba?: En el reporte la ciudad "Bogotá" salía duplicada porque en los datos crudos unos registros tenían un espacio extra ("Bogotá ") o estaban en minúscula ("bogota"), y el programa los trataba como si fueran ciudades totalmente diferentes.
+
+        La solución: Me tocó aplicar un trim() y toLowerCase() al momento de armar el diccionario para limpiar el texto y obligar a que todo quedara estandarizado bajo una sola clave.
+
+    NaN en el ticket promedio:
+
+        ¿Qué pasaba?: Cuando me puse a probar un día que no tenía ventas registradas, el cálculo del ticket promedio se rompía y arrojaba un NaN (Not a Number) en la consola.
+
+        La causa: Básicamente era una división por cero (intentar dividir el dinero total entre 0 transacciones).
+
+        La solución: Le agregué una validación o "guarda" al código para que compruebe primero si hay ventas; si el contador da cero, que devuelva un 0 limpio de una vez en lugar de intentar hacer la división prohibida.

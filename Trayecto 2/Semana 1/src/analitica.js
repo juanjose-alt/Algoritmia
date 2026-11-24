@@ -3,7 +3,7 @@ const ventas = require("./datos");
 function valorVenta(venta) {
     let total = 0;
     total = venta.cantidad * venta.precio;
-    return total;
+    return total; 
 }
 
 // --- 1. Versiones con Ciclos (Para verificar.js) ---
@@ -125,6 +125,25 @@ function topProductosPorValor(ventas, k) {
         .slice(0, k);
 }
 
+function ventasDelDia (ventas, fecha) {
+    let fechaLimpia = fecha.trim();
+    let ventasDia = ventas.filter(v => v.fecha.trim() === fechaLimpia);
+    
+    if (ventasDia.length === 0) {
+        return {
+            totalVendido: 0,
+            unidadesVendidas: 0,
+            mensaje: "No se registraron ventas en esta fecha."
+        };
+    }
+    
+    return {
+        totalVendido: totalVendidoM(ventasDia),
+        unidadesVendidas: unidadesVendidasM(ventasDia),
+        transacciones: ventasDia.length
+    };
+}
+
 // --- Exportaciones ---
 module.exports = {
     valorVenta,
@@ -138,5 +157,6 @@ module.exports = {
     ticketPromedio,
     totalPorCiudad,
     unidadesPorProducto,
-    topProductosPorValor
+    topProductosPorValor,
+    ventasDelDia
 };
