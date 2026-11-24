@@ -96,3 +96,10 @@ SubProceso promedio <- ticketPromedio(cantidades, precios, n)
         promedio <- 0
     FinSi
 FinSubProceso
+
+==========Noviembre 24-2026=============
+Bitácora - Reto 2 (Café Origen):
+
+Aprendizaje clave: Entendí cómo funciona el ciclo for...of para recorrer arreglos automáticamente sin enredos de índices (i++), viendo claramente la diferencia entre la colección (ventas) y el elemento actual (venta).
+
+Depuración: Me tropecé con un ReferenceError en ventaMayor por intentar usar la variable venta fuera de su ámbito (fuera del ciclo). Aprendí que el return debe entregar la variable del mayor y estar siempre afuera del bucle. 
