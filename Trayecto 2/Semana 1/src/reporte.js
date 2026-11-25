@@ -46,3 +46,19 @@ console.log(ventasDelDia(ventas, diaConVentas));
 
 console.log(`> Día sin ventas (${diaSinVentas}):`);
 console.log(ventasDelDia(ventas, diaSinVentas));
+
+
+// --------------------------------------------------
+
+function clientesRecurrentes(ventas) {
+  const recurrentes = [];
+  for (let i = 0; i < ventas.length; i++) {
+    for (let j = i + 1; j < ventas.length; j++) {
+      if (ventas[i].cliente === ventas[j].cliente &&
+          !recurrentes.includes(ventas[i].cliente)) {
+        recurrentes.push(ventas[i].cliente);
+      }
+    }
+  }
+  return recurrentes;
+}

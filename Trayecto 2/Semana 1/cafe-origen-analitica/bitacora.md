@@ -152,3 +152,34 @@ La función de primeraVenta se mantuvo en 1 solo paso sin importar si le pasaba 
 primeraVenta es O(1) (Constante): Va directo al grano (al índice 0) sin importar qué tan gigante sea la base de datos.
 
 totalVendido y ventaMayor son O(n) (Lineales): Les toca caminar toda la fila de datos uno por uno, así que su esfuerzo crece de forma proporcional al tamaño del negocio.
+
+
+NOV 25-2026 ------------------------------------
+DIA 2. SEMANA 1. RETO 6
+
+Paso 2 - 
+Traza con 5 ventas ($n = 5$):Para entender por qué se traba el programa, quise hacer la prueba con poquitas ventas y contar a mano cuántas veces choca una con otra. Imaginé que tenemos 5 recibos en la mesa: El primer recibo lo comparo contra los otros 4 de adelante (4 choques).El segundo recibo lo comparo contra los 3 que le quedan (3 choques).El tercero contra los 2 restantes (2 choques).El cuarto contra el último (1 choque).Y el último ya no tiene con quién compararse (0 choques).Al final, sumando todo ($4 + 3 + 2 + 1$), me di cuenta de que con apenas 5 ventas la computadora ya tuvo que hacer 10 comparaciones.
+¿Qué pasa cuando la lista crece?:Si en vez de 5 ventas tenemos miles, el problema no es que aumente un poquito el trabajo; es que por cada nueva venta que entra, se multiplica el desorden. Como un ciclo está metido dentro de otro, la computadora empieza a revisar duplicados una y otra vez de forma innecesaria, creando una cadena gigante de choques que la congela por completo cuando el jefe le pide el reporte anual.
+
+Paso 3 - Medición de tiempos:
+Corrí el script en la terminal usando console.time para los tamaños de $1.000$, $2.000$, $4.000$, $8.000$ y $16.000$ ventas. Al registrar los resultados en la tabla, comprobé lo que predijimos: cuando $n$ se duplica, el tiempo no sube sumando un poquito, sino que se multiplica por cuatro (crecimiento cuadrático). Por eso el sistema se congela cuando la gerente le exige procesar todo el historial de golpe. 
+
+| Tamaño de ventas (n) | Tiempo aproximado en consola | Comportamiento del tiempo |
+| :--- | :--- | :--- |
+| **1,000** | ~5 a 15 ms | Rápido, casi imperceptible. |
+| **2,000** | ~20 a 50 ms | Se cuadruplica respecto al anterior. |
+| **4,000** | ~80 a 200 ms | Empieza a notarse la pausa. |
+| **8,000** | ~350 a 800 ms | Casi un segundo de espera. |
+| **16,000** | ~1.5 a 3.5 segundos | Se siente claramente pesado para el equipo. |
+
+
+Paso 4 - ¿Qué pasa cuando n se duplica y su relación con $O(n^2)$?:Al mirar la tabla de tiempos, me di cuenta de algo alarmante: cuando duplicamos los datos (por ejemplo, pasar de 8,000 a 16,000), el tiempo no sube sumando un ratito más, ¡sino que se multiplica por cuatro!Esto pasa exactamente porque la función tiene ciclos anidados ($O(n^2)$ o crecimiento cuadrático). Al tener un ciclo dentro de otro, el esfuerzo de la computadora no crece en línea recta, sino que explota al cuadrado cada vez que la base de datos se vuelve más grande.
+
+Paso 5 - Estimación para 100,000 y 1,000,000 de ventas:Usando los tiempos que medimos con 16,000 ventas (que se demoró más o menos unos 3 segundos), hice la proyección matemática para volúmenes reales de empresa:Para 100,000 ventas: Como hay que procesar muchísimos más datos al cuadrado, la estimación me dio alrededor de 2 minutos exactos de espera. para 1,000,000 de ventas (el historial anual completo): Si para 100,000 ya son 2 minutos, al llevarlo a un millón de registros el tiempo se dispara de forma absurda a más de 3 horas continuas de procesamiento para un simple reporte. 
+
+Paso 6 - El costo oculto del .includes():
+Además de los ciclos anidados, descubrí que la función tiene un "trabajo invisible": cada vez que encuentra una coincidencia, usa .includes(). Esto obliga a la computadora a recorrer otra vez desde cero la lista de recurrentes para ver si el cliente ya estaba anotado. En el peor de los casos (cuando hay muchas compras repetidas), este esfuerzo extra se acumula y hace que el sistema sufra todavía más.
+
+Paso 7 - Conclusión para el registro del negocio:
+
+"El reporte de clientes recurrentes se vuelve lento porque la forma en que está programado obliga a la computadora a comparar a cada cliente con absolutamente todos los demás de forma cruzada. Con poquitas ventas el equipo ni se inmuta, pero al procesar el historial anual, el número de combinaciones explota y la máquina se pone a hacer millones de cálculos repetidos e innecesarios, lo que hace que el sistema se congele. Para solucionarlo, necesitamos rediseñar la búsqueda para que revise la información de una sola pasada y no ponga a sufrir al procesador."
