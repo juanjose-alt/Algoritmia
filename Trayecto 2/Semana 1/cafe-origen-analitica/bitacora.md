@@ -138,3 +138,17 @@ Bitácora - Reto 3 (Métodos y Verificación):
         La causa: Básicamente era una división por cero (intentar dividir el dinero total entre 0 transacciones).
 
         La solución: Le agregué una validación o "guarda" al código para que compruebe primero si hay ventas; si el contador da cero, que devuelva un 0 limpio de una vez en lugar de intentar hacer la división prohibida.
+
+
+
+Nov 25 - 2026 ----------------------
+MiniReto 5: Rendimiento, GEnerador de Datos y Big O
+El problema inicial:
+Con las 12 ventas de prueba del Día 1 no podía medir nada real. Así que me tocó construir una "fábrica" de datos (generador.js) para inventarme hasta 100,000 ventas y ver cuántos pasos exactos hace la computadora al procesarlas.Mis predicciones:
+Antes de correr las pruebas, pensé: "Si multiplico los datos por 10 (pasar de 1,000 a 10,000 registros), el trabajo de las funciones de búsqueda y suma también se va a multiplicar exactamente por 10, porque les toca recorrer la lista elemento por elemento".
+
+La función de primeraVenta se mantuvo en 1 solo paso sin importar si le pasaba 100 o 100,000 datos.
+
+primeraVenta es O(1) (Constante): Va directo al grano (al índice 0) sin importar qué tan gigante sea la base de datos.
+
+totalVendido y ventaMayor son O(n) (Lineales): Les toca caminar toda la fila de datos uno por uno, así que su esfuerzo crece de forma proporcional al tamaño del negocio.
