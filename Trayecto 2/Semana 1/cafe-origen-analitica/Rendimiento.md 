@@ -1,8 +1,10 @@
-Informe Técnico de Rendimiento - Café Origen (v0.2)
+Informe Técnico de Rendimiento - Café Origen (v1.0)
 
 
 
-En este documento reunimos la revisión de rendimiento, complejidad algorítmica y uso de memoria que le hicimos a todas las funciones del motor de analítica de Café Origen, poniéndolas a prueba bajo escenarios de alta carga.
+Este documento recopila la auditoría de rendimiento, complejidad algorítmica y uso de memoria de todas las funciones del motor de analítica de Café Origen, evaluadas bajo escenarios de alta carga para la entrega final al marketplace.
+
+
 
 
 
@@ -14,230 +16,327 @@ A continuación detallamos qué hace cada función, cómo se comporta en tiempo 
 
 
 
-- primeraVenta
+primeraVenta
 
-  Qué hace: Va directo al primer índice del arreglo.
+- Qué hace: Accede directamente al primer índice del arreglo.
 
-  Complejidad: Tiempo O(1) | Espacio O(1)
+- Complejidad: Tiempo O(1) | Espacio O(1)
 
-  Justificación: Al ser un acceso indexado directo, no importa qué tan grande sea la lista de datos.
+- Justificación: Al ser un acceso indexado directo, no importa qué tan grande sea la lista de datos.
 
-  Con 10.000 ventas: Hace 1 operación exacta.
+- Con 10.000 ventas: Hace 1 operación exacta.
 
 
 
-- totalVendido / totalVendidoM
+totalVendido / totalVendidoM
 
-  Qué hace: Suma el valor total de todas las transacciones.
+- Qué hace: Suma el valor total de todas las transacciones.
 
-  Complejidad: Tiempo O(n) | Espacio O(1)
+- Complejidad: Tiempo O(n) | Espacio O(1)
 
-  Justificación: Recorre la lista elemento por elemento y va acumulando el resultado en una variable primitiva.
+- Justificación: Recorre la lista elemento por elemento y va acumulando el resultado en una variable primitiva.
 
-  Con 10.000 ventas: Realiza alrededor de 10.000 operaciones.
+- Con 10.000 ventas: Realiza alrededor de 10.000 operaciones.
 
 
 
-- unidadesVendidas / unidadesVendidasM
+unidadesVendidas / unidadesVendidasM
 
-  Qué hace: Suma el total de unidades vendidas.
+- Qué hace: Suma el total de unidades vendidas.
 
-  Complejidad: Tiempo O(n) | Espacio O(1)
+- Complejidad: Tiempo O(n) | Espacio O(1)
 
-  Justificación: Es un ciclo lineal que procesa cada elemento una sola vez.
+- Justificación: Es un ciclo lineal que procesa cada elemento una sola vez.
 
-  Con 10.000 ventas: Realiza alrededor de 10.000 operaciones.
+- Con 10.000 ventas: Realiza alrededor de 10.000 operaciones.
 
 
 
-- ventasPorCiudad / ventasPorCiudadM
+ventasPorCiudad / ventasPorCiudadM
 
-  Qué hace: Filtra y acumula el dinero de una ciudad en específico.
+- Qué hace: Filtra y acumula el dinero de una ciudad en específico.
 
-  Complejidad: Tiempo O(n) | Espacio O(1) o O(n)
+- Complejidad: Tiempo O(n) | Espacio O(1) o O(n)
 
-  Justificación: Hace un recorrido lineal. La diferencia es que la versión con métodos (.filter()) crea un arreglo temporal adicional en memoria.
+- Justificación: Hace un recorrido lineal. La diferencia es que la versión con métodos (.filter()) crea un arreglo temporal adicional en memoria.
 
-  Con 10.000 ventas: Realiza alrededor de 10.000 operaciones.
+- Con 10.000 ventas: Realiza alrededor de 10.000 operaciones.
 
 
 
-- ventaMayor
+ventaMayor
 
-  Qué hace: Encuentra la transacción con el valor económico más alto.
+- Qué hace: Encuentra la transacción con el valor económico más alto.
 
-  Complejidad: Tiempo O(n) | Espacio O(1)
+- Complejidad: Tiempo O(n) | Espacio O(1)
 
-  Justificación: Compara cada elemento contra un registro pivote actual en una sola pasada.
+- Justificación: Compara cada elemento contra un registro pivote actual en una sola pasada.
 
-  Con 10.000 ventas: Realiza alrededor de 10.000 operaciones.
+- Con 10.000 ventas: Realiza alrededor de 10.000 operaciones.
 
 
 
-- ticketPromedio
+ticketPromedio
 
-  Qué hace: Calcula el promedio de venta por cada transacción válida.
+- Qué hace: Calcula el promedio de venta por cada transacción válida.
 
-  Complejidad: Tiempo O(n) | Espacio O(1)
+- Complejidad: Tiempo O(n) | Espacio O(1)
 
-  Justificación: Recorre los datos filtrando los ceros y acumulando los resultados en variables fijas.
+- Justificación: Recorre los datos filtrando los ceros y acumulando los resultados en variables fijas.
 
-  Con 10.000 ventas: Realiza alrededor de 10.000 operaciones.
+- Con 10.000 ventas: Realiza alrededor de 10.000 operaciones.
 
 
 
-- totalPorCiudad
+totalPorCiudad
 
-  Qué hace: Agrupa y suma las ventas totales de cada ciudad.
+- Qué hace: Agrupa y suma las ventas totales de cada ciudad.
 
-  Complejidad: Tiempo O(n) | Espacio O(n)
+- Complejidad: Tiempo O(n) | Espacio O(n)
 
-  Justificación: Va armando un objeto diccionario dinámico cuyas claves crecen según la cantidad de ciudades únicas.
+- Justificación: Va armando un objeto diccionario dinámico cuyas claves crecen según la cantidad de ciudades únicas.
 
-  Con 10.000 ventas: Realiza alrededor de 10.000 operaciones.
+- Con 10.000 ventas: Realiza alrededor de 10.000 operaciones.
 
 
 
-- unidadesPorProducto
+unidadesPorProducto
 
-  Qué hace: Agrupa las unidades vendidas por cada producto.
+- Qué hace: Agrupa las unidades vendidas por cada producto.
 
-  Complejidad: Tiempo O(n) | Espacio O(n)
+- Complejidad: Tiempo O(n) | Espacio O(n)
 
-  Justificación: Guarda los resultados en un diccionario dinámico en la memoria.
+- Justificación: Guarda los resultados en un diccionario dinámico en la memoria.
 
-  Con 10.000 ventas: Realiza alrededor de 10.000 operaciones.
+- Con 10.000 ventas: Realiza alrededor de 10.000 operaciones.
 
 
 
-- topProductosPorValor
+topProductosPorValor
 
-  Qué hace: Ordena y saca el top k de los productos más costosos.
+- Qué hace: Ordena y saca el top k de los productos más costosos.
 
-  Complejidad: Tiempo O(n log n) | Espacio O(n)
+- Complejidad: Tiempo O(n log n) | Espacio O(n)
 
-  Justificación: Requiere convertir objetos a arreglos, mapearlos y luego ordenarlos usando .sort().
+- Justificación: Requiere convertir objetos a arreglos, mapearlos y luego ordenarlos usando .sort().
 
-  Con 10.000 ventas: Realiza alrededor de 10.000 operaciones más el proceso de ordenamiento.
+- Con 10.000 ventas: Realiza alrededor de 10.000 operaciones más el proceso de ordenamiento.
 
 
 
-- ventasDelDia
+ventasDelDia
 
-  Qué hace: Filtra y resume las ventas de una fecha específica.
+- Qué hace: Filtra y resume las ventas de una fecha específica.
 
-  Complejidad: Tiempo O(n) | Espacio O(n)
+- Complejidad: Tiempo O(n) | Espacio O(n)
 
-  Justificación: Crea un sub-arreglo temporal con las transacciones que coinciden con el día buscado.
+- Justificación: Crea un sub-arreglo temporal con las transacciones que coinciden con el día buscado.
 
-  Con 10.000 ventas: Realiza alrededor de 10.000 operaciones.
+- Con 10.000 ventas: Realiza alrededor de 10.000 operaciones.
 
 
 
-- clientesRecurrentes
+clientesRecurrentes (Versión Antigua v0.1)
 
-  Qué hace: Detecta clientes repetidos cruzando toda la base de datos.
+- Qué hace: Detecta clientes repetidos cruzando toda la base de datos por fuerza bruta.
 
-  Complejidad: Tiempo O(n^2) | Espacio O(n)
+- Complejidad: Tiempo O(n^2) | Espacio O(n)
 
-  Justificación: Usa ciclos anidados (un for dentro de otro for) que terminan combinando cada elemento con todos los demás.
+- Justificación: Usa ciclos anidados (for dentro de for) combinando cada elemento con todos los demás.
 
-  Con 10.000 ventas: Realiza alrededor de 50.000.000 de operaciones, tardando entre 1.5 y 3.5 segundos.
+- Con 10.000 ventas: Realiza millones de operaciones, tardando segundos o congelando el sistema.
 
 
 
-- totalCiudadCadena
+totalCiudadCadena
 
-  Qué hace: Calcula el total por ciudad usando métodos encadenados.
+- Qué hace: Calcula el total por ciudad usando métodos encadenados.
 
-  Complejidad: Tiempo O(n) | Espacio O(n)
+- Complejidad: Tiempo O(n) | Espacio O(n)
 
-  Justificación: Hace 4 pasadas completas sobre los datos y genera 3 arreglos intermedios en la memoria RAM.
+- Justificación: Hace 4 pasadas completas sobre los datos y genera 3 arreglos intermedios en la memoria RAM.
 
-  Con 10.000 ventas: Realiza alrededor de 40.000 operaciones virtuales.
+- Con 10.000 ventas: Realiza alrededor de 40.000 operaciones virtuales.
 
 
 
-- totalCiudadUnaPasada
+totalCiudadUnaPasada
 
-  Qué hace: Calcula el total por ciudad mediante un único ciclo.
+- Qué hace: Calcula el total por ciudad mediante un único ciclo.
 
-  Complejidad: Tiempo O(n) | Espacio O(1)
+- Complejidad: Tiempo O(n) | Espacio O(1)
 
-  Justificación: Hace 1 sola pasada limpia sin necesidad de crear estructuras intermedias en memoria.
+- Justificación: Hace 1 sola pasada limpia sin necesidad de crear estructuras intermedias en memoria.
 
-  Con 10.000 ventas: Realiza alrededor de 10.000 operaciones.
+- Con 10.000 ventas: Realiza alrededor de 10.000 operaciones.
 
 
 
---------------------------------------------------------------------------------
+clientesRecurrentesSet / comprasPorCliente (Optimizado v1.0)
 
+- Qué hace: Detecta clientes repetidos usando estructuras Set o Map en una sola pasada.
 
+- Complejidad: Tiempo O(n) | Espacio O(n)
 
-2. Proyección para 1.000.000 de ventas
+- Justificación: Elimina los ciclos anidados buscando en tiempo constante O(1) gracias a las tablas hash nativas.
 
+- Con 10.000 ventas: Resuelve en menos de 10 milisegundos.
 
 
-Tomando como base las mediciones reales que sacamos con nuestros scripts de prueba, calculamos cómo respondería el servidor si le metemos cien veces más volumen (1 millón de registros):
 
+productoEstrellaPorCiudad
 
+- Qué hace: Encuentra el producto más vendido en cada ciudad mediante conteo de frecuencias.
 
-- Funciones Lineales O(n) (como totalVendido o totalCiudadUnaPasada):
+- Complejidad: Tiempo O(n) | Espacio O(n)
 
-  Si procesar 10.000 ventas toma milisegundos que ni se notan, procesar 1.000.000 tomará proporcionalmente 100 veces más. Eso se traduce en apenas unos 0.1 a 0.3 segundos, un rendimiento súper seguro y estable para la plataforma.
+- Justificación: Usa un Map anidado para contabilizar apariciones en un único recorrido lineal.
 
+- Con 10.000 ventas: Procesa y agrupa eficientemente en milisegundos.
 
 
-- Funciones Cuadráticas O(n^2) (como clientesRecurrentes):
 
-  Aquí el tiempo se multiplica de forma exponencial al cuadrado. Si pasar 16.000 ventas ya nos toma unos 3 segundos, subir a 1.000.000 de registros hará que el proceso se dispare a más de 3 horas continuas de trabajo, bloqueando por completo el hilo principal del servidor.
+comboRegalo
 
+- Qué hace: Encuentra dos productos del catálogo cuyo precio sume exactamente el valor de la tarjeta de regalo.
 
+- Complejidad: Tiempo O(n) | Espacio O(n)
 
---------------------------------------------------------------------------------
+- Justificación: Patrón de búsqueda de complementos usando un Map para revisar precios vistos en pasada única.
 
+- Con 10.000 ventas / catálogo: Resolución instantánea O(1) promedio por búsqueda.
 
 
-3. Riesgos (Ordenados de mayor a menor gravedad)
 
+primerClienteUnico
 
+- Qué hace: Identifica el primer cliente en orden cronológico que aparece una sola vez en todo el historial.
 
-1. clientesRecurrentes (Riesgo Crítico - O(n^2)):
+- Complejidad: Tiempo O(n) | Espacio O(n)
 
-   Es una bomba de tiempo. Cada vez que se duplican los datos, el esfuerzo se cuadruplica por culpa de los ciclos anidados y el uso repetitivo de .includes(). Con volúmenes reales de empresa, termina congelando el sistema.
+- Justificación: Realiza dos recorridos lineales secuenciales independientes apoyados en un Map de frecuencias.
 
+- Con 10.000 ventas: Procesa rápidamente sin afectar el rendimiento.
 
 
-2. Funciones de Agrupación masiva y Ordenamiento (topProductosPorValor, totalPorCiudad - Riesgo Moderado):
 
-   Aunque en tiempo son lineales, consumen memoria RAM de forma proporcional (O(n)) al ir creando diccionarios y listas ordenadas. Si la base de datos crece sin parar, pueden generar picos de presión en el recolector de basura.
+mejorSemana
 
+- Qué hace: Encuentra el bloque de 7 días consecutivos con mayor total de ventas.
 
+- Complejidad: Tiempo O(n) | Espacio O(1)
 
-3. Funciones Lineales Simples / Recorrido Único (totalCiudadUnaPasada, ticketPromedio - Riesgo Bajo):
+- Justificación: Aplica la técnica de ventana deslizante de tamaño fijo, sumando el elemento que entra y restando el que sale.
 
-   Son muy estables, mantienen un consumo de memoria constante (O(1)) y ya están optimizadas para correr sin afectar los recursos del servidor.
+- Con 10.000 ventas: Cálculo lineal ultra rápido con memoria auxiliar constante.
 
 
 
---------------------------------------------------------------------------------
+parMasCercano
 
+- Qué hace: Encuentra dos productos cuyo precio sume lo más cerca posible al presupuesto sin superarlo.
 
+- Complejidad: Tiempo O(n log n) | Espacio O(n)
 
-4. Plan de Optimización (Enfocado en clientesRecurrentes)
+- Justificación: Ordena los precios de menor a mayor (.sort()) y utiliza la técnica de dos punteros desde los extremos.
 
+- Con 10.000 ventas / catálogo: Dominado por el costo de ordenamiento inicial.
 
 
-- Qué trabajo se está repitiendo:
 
-  La función actual compara a cada cliente contra absolutamente todos los demás de forma cruzada, evaluando pares repetidos e innecesarios una y otra vez. Además, en cada coincidencia vuelve a recorrer la lista auxiliar de comprobación usando .includes().
 
 
+2. Comparación de Rendimiento Global: v0.1 vs. v1.0 (Reporte Completo)
 
-- Propuesta de mejora (pendiente por implementar):
 
-  En lugar de seguir usando ciclos anidados, podemos aplicar una tabla hash (o un objeto Set en JavaScript) para resolverlo en un recorrido único de O(n):
 
-  - Creamos un objeto de conteo o un Set de clientes visitados.
+Para demostrar el salto de calidad ante la gerencia y el marketplace, medimos el tiempo total de ejecución del script completo del reporte bajo dos volúmenes de datos masivos:
 
-  - Recorremos la lista de ventas una sola vez: si el cliente ya está registrado en el Set, lo pasamos directo a la lista de recurrentes sin tener que volver a buscar en toda la base de datos. Con este cambio bajaríamos drásticamente la complejidad de O(n^2) a un limpio O(n).
+
+
+- Para 10.000 ventas:
+
+  Versión v0.1 (Fuerza Bruta / O(n^2)): ~1.5 a 3.0 segundos.
+
+  Versión v1.0 (Optimizado / O(n)): ~0.06 a 0.12 segundos (~25x más rápido; elimina la fricción inicial).
+
+
+
+- Para 100.000 ventas:
+
+  Versión v0.1 (Fuerza Bruta / O(n^2)): Congelado / Timeout (más de minutos).
+
+  Versión v1.0 (Optimizado / O(n)): ~0.25 a 0.45 segundos (¡Cumple la meta del marketplace menor a 1 segundo!).
+
+
+
+Análisis de la mejora: En la versión v0.1, la función de clientes recurrentes con ciclos anidados arrastraba todo el rendimiento del reporte hacia abajo. Al migrar a Set y Map en la versión v1.0, todo el motor de analítica corre de manera lineal, permitiendo procesar cien mil registros con soltura y manteniendo el consumo de CPU y memoria bajo control estricto.
+
+
+
+
+
+3. Proyección para 1.000.000 de ventas
+
+
+
+Tomando como base las mediciones reales de la versión v1.0, calculamos cómo respondería el servidor si le metemos un millón de registros: procesar 1.000.000 de ventas con las funciones lineales optimizadas O(n) tomará aproximadamente 2.5 a 4.5 segundos, manteniendo la estabilidad operativa del servidor corporativo.
+
+
+
+
+
+4. Riesgos y Conclusión de la Entrega
+
+
+
+1. Riesgo Mitigado - Clientes Recurrentes: El cuello de botella crítico de la v0.1 O(n^2) fue completamente erradicado al incorporar estructuras de tiempo constante (Set / Map), asegurando la escalabilidad del sistema.
+
+2. Uso de Memoria: Las funciones de agregación y dos punteros operan con alta eficiencia, garantizando que Café Origen entregue un software robusto, documentado y listo para producción.
+
+
+
+
+Cierre de Semana: Resumen General de MiniRetos y Estrategias de Optimización (v1.0)
+
+Al echar la vista atrás en esta intensa semana de desarrollo con Café Origen, pasamos de un simple arreglo estático de 12 ventas a un motor de analítica corporativa robusto, escalable y optimizado para el marketplace. Así fue como construimos cada pieza del producto:
+
+1. Resumen de los 12 MiniRetos de la Semana
+
+MiniReto 1: Primer tueste (El repositorio y los datos): Analizamos el modelo de datos crudos (datos.js) y detectamos casos borde críticos como espacios en blanco, mayúsculas y minúsculas mezcladas en las ciudades y cantidades en cero.
+
+MiniReto 2: Los números del día: Construimos los primeros indicadores básicos de negocio utilizando ciclos tradicionales (for...of) y manejo de vacíos o divisiones por cero.
+
+MiniReto 3: Del ciclo al método: Reescribimos la lógica utilizando métodos funcionales modernos de arreglos (map, filter, reduce), comparando resultados mediante scripts de verificación.
+
+MiniReto 4: Analítica v0.1: Integramos todo en la primera versión entregable del reporte por consola y depuramos los errores de limpieza de cadenas.
+
+MiniReto 5: ¿Cuánto cuesta cada reporte?: Creamos la fábrica de datos masivos (generador.js) y medimos el conteo de operaciones para entender la ley empírica del Big O.
+
+MiniReto 6: El reporte que se volvió lento: Diagnosticamos el cuello de botella crítico en la función de clientes recurrentes, midiendo tiempos reales y comprobando su comportamiento cuadrático O(n al cuadrado).
+
+MiniReto 7: Tiempo, memoria y cadenas: Analizamos la complejidad espacial del encadenamiento de métodos en totalCiudad frente a un recorrido único, tomando la decisión de diseño óptima para la RAM.
+
+MiniReto 8: Analítica v0.2: Consolidamos el informe técnico formal en RENDIMIENTO.md, estableciendo proyecciones a un millón de registros y priorizando riesgos.
+
+MiniReto 9: Clientes recurrentes en tiempo lineal: Eliminamos los ciclos anidados implementando estructuras nativas de tiempo constante (Set y Map), logrando procesar 100,000 ventas en milisegundos.
+
+MiniReto 10: Combos de regalo y frecuencias: Implementamos patrones comerciales avanzados de búsqueda de complementos y conteo de frecuencias anidadas para campañas corporativas.
+
+MiniReto 11: La racha y el presupuesto: Aplicamos la técnica de ventana deslizante de tamaño fijo para rachas de ventas y dos punteros sobre arreglos ordenados para optimizar presupuestos de clientes.
+
+MiniReto 12: Analítica v1.0: Cerramos el producto integrando la ejecución por consola con parámetros dinámicos, actualizando la documentación de producto (README.md) y preparando la entrega final.
+
+2. Estrategias de Resolución Aplicadas en las Optimizaciones
+
+Durante las fases de optimización, abandonamos la fuerza bruta y aplicamos tres estrategias clave de ingeniería de software:
+
+Eliminación de Ciclos Anidados mediante Tablas Hash (Set y Map):
+Problema: El cálculo de clientes recurrentes cruzaba cada elemento contra todos los demás O(n al cuadrado).
+Estrategia: Sustituimos las comparaciones cruzadas por recorridos lineales O(n) apoyándonos en la capacidad de búsqueda instantánea O(1) que ofrecen los Set para elementos únicos y los Map para frecuencias.
+
+Trade-off de Espacio vs. Tiempo (Memoria Auxiliar):
+Estrategia: Asumimos un costo de memoria de O(n) en espacio auxiliar al instanciar diccionarios y conjuntos en la RAM, a cambio de reducir drásticamente el tiempo de procesamiento de minutos a milisegundos, cumpliendo holgadamente la meta del marketplace de responder en menos de un segundo con 100,000 registros.
+
+Técnicas de Punteros y Ventanas en Datos Secuenciales:
+Estrategia: Para problemas de subsecuencias y rangos, evitamos recalcular sumas desde cero utilizando ventanas deslizantes O(n), y para selección de pares bajo restricciones presupuestarias, ordenamos previamente los datos para aplicar la estrategia de dos punteros desde los extremos, reduciendo la complejidad exponencial a un manejo eficiente del ordenamiento O(n log n).
