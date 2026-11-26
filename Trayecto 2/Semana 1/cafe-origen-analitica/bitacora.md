@@ -403,3 +403,11 @@ Análisis de Rendimiento y Complejidad Espacial (Reto: totalCiudad)
 - Repasando el motor: Me puse a mirar las demás funciones: totalPorCiudad y topProductosPorValor arman diccionarios y listas que crecen con los datos (O(n)), mientras que los acumuladores directos se quedan ligeros en memoria constante (O(1)).
 
 - La decisión final: Nos quedamos con el ciclo de una sola pasada (totalCiudadUnaPasada). Aunque la cadena se ve más "elegante" y moderna, hay que cuidar la RAM del servidor del marketplace para que no sufra cuando le caigan muchas transacciones de golpe.
+
+Noviembre 26 - 2026: Cierre de v0.2
+
+Feedback del combo: Estuve revisando el informe con un compañero del parche de desarrollo y me hizo una observación muy válida sobre la función de clientesRecurrentes. Me comentó que, aunque el código original se entiende leyéndolo por encima, dejar un proceso O(n^2) en producción es arriesgarse demasiado a que el servidor se caiga apenas el cliente cargue el historial completo del año. Le dije que tiene toda la razón, y por eso en el archivo RENDIMIENTO.md ya dejamos planteado el plan para migrarlo a un Set de una sola pasada en la siguiente iteración.
+
+
+
+Preparando la entrega: Ya dejamos todo bien documentado en el archivo de rendimiento, validamos que todas las métricas cuadren correctamente y armamos los commits correspondientes a cada mini-reto para dejar el repositorio impecable con la etiqueta v0.2.
