@@ -171,8 +171,48 @@ function totalCiudadUnaPasada(ventas, ciudad) {
 }
 
 
+
+// --- Versión 1: Con Set (Búsqueda y registro en O(n)) ---
+function clientesRecurrentesSet(ventas) {
+    const vistos = new Set();
+    const recurrentes = new Set();
+    
+    for (let venta of ventas) {
+        let cliente = venta.cliente.trim();
+        if (vistos.has(cliente)) {
+            recurrentes.add(cliente);
+        } else {
+            vistos.add(cliente);
+        }
+    }
+    return Array.from(recurrentes);
+}
+
+// --- Versión 2: Con Map (Conteo de frecuencias en O(n)) ---
+function comprasPorCliente(ventas) {
+    const conteo = new Map();
+    
+    for (let venta of ventas) {
+        let cliente = venta.cliente.trim();
+        let actual = conteo.get(cliente) || 0;
+        conteo.set(cliente, actual + 1);
+    }
+    
+    const recurrentes = [];
+    for (let [cliente, total] of conteo.entries()) {
+        if (total > 1) {
+            recurrentes.push(cliente);
+        }
+    }
+    return recurrentes;
+}
+
+
+
 // --- Exportaciones ---
 module.exports = {
+    comprasPorCliente,
+    clientesRecurrentesSet,
     valorVenta,
     totalVendido,
     totalVendidoM,

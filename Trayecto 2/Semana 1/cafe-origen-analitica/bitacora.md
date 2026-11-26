@@ -411,3 +411,73 @@ Feedback del combo: Estuve revisando el informe con un compañero del parche de 
 
 
 Preparando la entrega: Ya dejamos todo bien documentado en el archivo de rendimiento, validamos que todas las métricas cuadren correctamente y armamos los commits correspondientes a cada mini-reto para dejar el repositorio impecable con la etiqueta v0.2.
+
+
+Noviembre 26--2026
+
+Aplicamos el método de resolución de retos para limpiar el cuello de botella principal del sistema:
+
+1. Entender el Problema
+
+Entradas: Un arreglo gigante de objetos de ventas (ventas), donde cada objeto contiene el identificador de un cliente.
+
+Salidas: Una lista (arreglo) única con los códigos de los clientes que aparecen más de una vez en las transacciones.
+
+Restricciones: El marketplace exige que el reporte responda en menos de 1 segundo incluso al procesar 100,000 ventas, ya que la versión anterior de ciclos anidados se quedaba completamente congelada.
+
+2. Ejemplos y Casos Borde
+
+Si la lista de ventas está vacía, la función debe retornar un arreglo vacío [].
+
+Si ningún cliente se repite en el historial, debe retornar [].
+
+Si un mismo cliente aparece 5 veces, solo debe listarse una única vez en el resultado final para evitar duplicados.
+
+3. Fuerza Bruta y su Complejidad
+
+Enfoque original: Dos ciclos for anidados cruzando cada venta contra todas las demás, acompañados de una búsqueda con .includes().
+
+Complejidad Temporal: O(n^2) (Cuadrática). Al llegar a 100,000 ventas, el número de operaciones se dispara a miles de millones, volviéndose totalmente inviable.
+
+4. Idea de Optimización
+
+En lugar de hacer comparaciones cruzadas, logramos resolverlo en una sola pasada lineal O(n) mediante dos alternativas:
+
+Opción A (Set): Usamos un Set llamado vistos para ir registrando los clientes que ya pasaron, y otro Set llamado recurrentes para capturar al instante a los repetidos apenas los volvemos a encontrar.
+
+Opción B (Map): Usamos un Map para llevar el conteo exacto de compras por cada cliente (cliente -> cantidad), y al final simplemente filtramos los que pasaron de 1 compra.
+
+5. Implementación
+
+Codificamos con éxito tanto clientesRecurrentesSet como comprasPorCliente, y validamos que al ordenar las respuestas con .sort(), las tres versiones (original, Set y Map) coinciden milimétricamente en los datos entregados.
+
+6. Pruebas, Mediciones y el Intercambio de Memoria (Time-Space Tradeoff)
+
+Resultados comparativos según el tamaño de ventas (n):
+
+Para 1,000 ventas:
+
+Versión Original O(n^2): ~10 ms
+
+Versión Set O(n): ~1 ms
+
+Versión Map O(n): ~2 ms
+
+Para 10,000 ventas:
+
+Versión Original O(n^2): ~800 ms
+
+Versión Set O(n): ~3 ms
+
+Versión Map O(n): ~4 ms
+
+Para 100,000 ventas:
+
+Versión Original O(n^2): Congelado / Inviable
+
+Versión Set O(n): ~15 - 25 ms
+
+Versión Map O(n): ~20 - 35 ms
+
+El intercambio (Tradeoff): ¿Qué ganamos y qué perdimos? Ganamos tiempo de una forma brutal, bajando de minutos u horas a apenas unos milisegundos y cumpliendo sobrados con la meta de 1 segundo para 100,000 registros. ¿El costo? Memoria, específicamente O(n) en espacio auxiliar, ya que necesitamos crear el Set o el Map en la RAM para guardar los registros únicos o los conteos. Como la memoria RAM del servidor es mucho más barata y tolerante que el tiempo de espera del usuario, este intercambio vale totalmente la pena.
+
