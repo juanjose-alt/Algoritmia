@@ -144,6 +144,33 @@ function ventasDelDia (ventas, fecha) {
     };
 }
 
+
+/* Reto 7, dia 2 
+
+// --- Versión A: Cadena de Métodos (Encadenamiento) ---
+function totalCiudadCadena(ventas, ciudad) {
+    let ciudadLimpia = ciudad.trim().toLowerCase();
+    return ventas
+        .map(v => ({ ...v, ciudad: v.ciudad.trim().toLowerCase() })) // 1er mapeo: normaliza ciudad
+        .filter(v => v.ciudad === ciudadLimpia)                       // 2do filtrado: selecciona la ciudad
+        .map(v => valorVenta(v))                                      // 3er mapeo: calcula el valor total de cada venta
+        .reduce((acum, val) => acum + val, 0);                        // Reducción: suma acumulada
+}
+
+*/
+
+function totalCiudadUnaPasada(ventas, ciudad) {
+    let ciudadLimpia = ciudad.trim().toLowerCase();
+    let acumulador = 0;
+    for (let venta of ventas) {
+        if (venta.ciudad.trim().toLowerCase() === ciudadLimpia) {
+            acumulador += valorVenta(venta);
+        }
+    }
+    return acumulador;
+}
+
+
 // --- Exportaciones ---
 module.exports = {
     valorVenta,
@@ -158,5 +185,6 @@ module.exports = {
     totalPorCiudad,
     unidadesPorProducto,
     topProductosPorValor,
-    ventasDelDia
+    ventasDelDia,
+    totalCiudadUnaPasada
 };
