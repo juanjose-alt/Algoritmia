@@ -209,6 +209,102 @@ function comprasPorCliente(ventas) {
 
 
 
+
+// --- 1. Combo Regalo: Fuerza Bruta O(n^2) ---
+function comboRegaloBruta(catalogo, valor) {
+    if (!catalogo || catalogo.length < 2) return null;
+    
+    for (let i = 0; i < catalogo.length; i++) {
+        for (let j = i + 1; j < catalogo.length; j++) {
+            if (catalogo[i].precio + catalogo[j].precio === valor) {
+                return [catalogo[i], catalogo[j]];
+            }
+        }
+    }
+    return null;
+}
+
+// --- 2. Combo Regalo Optimizado con Map O(n) ---
+function comboRegalo(catalogo, valor) {
+    if (!catalogo || catalogo.length < 2) return null;
+    
+    // Guardamos: precio -> objeto producto
+    const vistos = new Map();
+    
+    for (let item of catalogo) {
+        let complemento = valor - item.precio;
+        if (vistos.has(complemento)) {
+            return [vistos.get(complemento), item];
+        }
+        vistos.set(item.precio, item);
+    }
+    return null;
+}
+
+// --- 3. Producto Estrella por Ciudad O(n) ---
+// Regla de desempate: En caso de empate en cantidad de apariciones, 
+// conserva el producto que alcanzó primero ese conteo máximo en orden cronológico.
+function productoEstrellaPorCiudad(ventas) {
+    if (!ventas || ventas.length === 0) return {};
+    
+    const conteoPorCiudad = new Map();
+    
+    // 1. Contamos frecuencias por cada ciudad normalizada
+    for (let venta of ventas) {
+        let ciudad = venta.ciudad.trim().toLowerCase();
+        // Capitalizamos la primera letra para presentar limpio el resultado
+        let ciudadFormato = ciudad.charAt(0).toUpperCase() + ciudad.slice(1);
+        
+        if (!conteoPorCiudad.has(ciudadFormato)) {
+            conteoPorCiudad.set(ciudadFormato, new Map());
+        }
+        
+        let mapaProductos = conteoPorCiudad.get(ciudadFormato);
+        let prod = venta.producto.trim();
+        mapaProductos.set(prod, (mapaProductos.get(prod) || 0) + 1);
+    }
+    
+    // 2. Extraemos el producto con mayor frecuencia por ciudad
+    const estrellas = {};
+    for (let [ciudad, mapaProductos] of conteoPorCiudad.entries()) {
+        let mejorProducto = null;
+        let maxApariciones = 0;
+        
+        for (let [producto, cantidad] of mapaProductos.entries()) {
+            // Al usar strictly greater (>), en empate se queda el primero que llegó
+            if (cantidad > maxApariciones) {
+                maxApariciones = cantidad;
+                mejorProducto = producto;
+            }
+        }
+        estrellas[ciudad] = { producto: mejorProducto, apariciones: maxApariciones };
+    }
+    
+    return estrellas;
+}
+
+// --- 4. Primer Cliente Único O(n) ---
+function primerClienteUnico(ventas) {
+    if (!ventas || ventas.length === 0) return null;
+    
+    const frecuencias = new Map();
+    
+    // Primer recorrido: contar cuántas veces aparece cada cliente
+    for (let venta of ventas) {
+        let cliente = venta.cliente.trim();
+        frecuencias.set(cliente, (frecuencias.get(cliente) || 0) + 1);
+    }
+    
+    // Segundo recorrido: encontrar el primero en orden de ventas con frecuencia === 1
+    for (let venta of ventas) {
+        let cliente = venta.cliente.trim();
+        if (frecuencias.get(cliente) === 1) {
+            return cliente;
+        }
+    }
+    
+    return null;
+}
 // --- Exportaciones ---
 module.exports = {
     comprasPorCliente,
@@ -226,5 +322,9 @@ module.exports = {
     unidadesPorProducto,
     topProductosPorValor,
     ventasDelDia,
-    totalCiudadUnaPasada
+    totalCiudadUnaPasada,
+    comboRegaloBruta,
+    comboRegalo,
+    productoEstrellaPorCiudad,
+    primerClienteUnico
 };

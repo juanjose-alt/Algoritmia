@@ -481,3 +481,58 @@ Versión Map O(n): ~20 - 35 ms
 
 El intercambio (Tradeoff): ¿Qué ganamos y qué perdimos? Ganamos tiempo de una forma brutal, bajando de minutos u horas a apenas unos milisegundos y cumpliendo sobrados con la meta de 1 segundo para 100,000 registros. ¿El costo? Memoria, específicamente O(n) en espacio auxiliar, ya que necesitamos crear el Set o el Map en la RAM para guardar los registros únicos o los conteos. Como la memoria RAM del servidor es mucho más barata y tolerante que el tiempo de espera del usuario, este intercambio vale totalmente la pena.
 
+
+
+Reto 10 - Dia 3 -Semana 1
+
+
+
+Noviembre 28 - 2026: Campaña Fin de Año (Complementos y Frecuencias con Map)
+
+
+
+Resolvimos los requerimientos comerciales usando diccionarios clave-valor (Map) para evitar ciclos anidados lentos.
+
+
+
+1. Traza de comboRegalo(catalogo, 87000)
+
+
+
+Usamos un Map llamado vistos (precio -> producto) para encontrar el par en una sola pasada:
+
+
+
+Paso 1: Evalúa Origen Nariño 250 g ($26.000). Busca $61.000 -> No está. Guarda { 26000 => Nariño 250 g }.
+
+Paso 2: Evalúa Origen Huila 500 g ($42.000). Busca $45.000 -> No está. Guarda { 26000, 42000 => Huila 500 g }.
+
+Paso 3: Evalúa Origen Sierra 500 g ($45.000). Busca $42.000 -> ¡Sí está! Retorna [Huila 500 g, Sierra 500 g] y termina.
+
+
+
+Pruebas extra: Con 61000 devolvió Origen Nariño 250 g ($26.000) + Taza de cerámica ($35.000). Con 50000 (imposible) devolvió null.
+
+
+
+2. Regla de Desempate y Casos Borde
+
+
+
+productoEstrellaPorCiudad: Cuenta frecuencias por ciudad usando un Map y normalizando textos con .trim().toLowerCase() (para unir "medellín" y "Medellín"). En caso de empate, se conserva el producto que alcanzó primero esa cantidad (comparación estricta >).
+
+primerClienteUnico: Con los datos del Día 1 devolvió C04 (porque C01, C02 y C03 repitieron compra antes). Si todos repiten o no hay datos, devuelve null.
+
+
+
+3. Complejidad Big O
+
+
+
+comboRegaloBruta (Descartada): Tiempo O(n^2) por ciclos anidados; Espacio O(1).
+
+comboRegalo (Optimizada): Tiempo O(n) (una pasada con búsquedas O(1) en el Map); Espacio O(n) en el peor caso.
+
+productoEstrellaPorCiudad: Tiempo O(n) y Espacio O(n) al agrupar contadores por ciudad y producto.
+
+primerClienteUnico: Tiempo O(n) (dos recorridos separados, sin anidar) y Espacio O(n) por el Map de frecuencias.
