@@ -305,6 +305,85 @@ function primerClienteUnico(ventas) {
     
     return null;
 }
+
+
+// --- 1. Mejor Semana: Fuerza Bruta O((n - k + 1) * k) ---
+function mejorSemanaBruta(dias, k) {
+    if (!dias || dias.length < k || k <= 0) return null;
+    let maxSuma = -Infinity;
+    let mejorInicio = 0;
+    
+    for (let i = 0; i <= dias.length - k; i++) {
+        let sumaActual = 0;
+        for (let j = 0; j < k; j++) {
+            sumaActual += dias[i + j];
+        }
+        if (sumaActual > maxSuma) {
+            maxSuma = sumaActual;
+            mejorInicio = i;
+        }
+    }
+    return { mejorInicio: mejorInicio + 1, maxSuma }; // Retorna el día de inicio (base 1) y su total
+}
+
+// --- 2. Mejor Semana con Ventana Deslizante O(n) ---
+function mejorSemana(dias, k) {
+    if (!dias || dias.length < k || k <= 0) return null;
+    
+    // Paso 1: Sumar la primera ventana de tamaño k
+    let sumaActual = 0;
+    for (let i = 0; i < k; i++) {
+        sumaActual += dias[i];
+    }
+    
+    let maxSuma = sumaActual;
+    let mejorInicio = 0; // Índice 0 (Día 1)
+    
+    // Paso 2: Deslizar la ventana elemento por elemento
+    for (let i = k; i < dias.length; i++) {
+        // Suma el nuevo elemento que entra y resta el que sale por la izquierda
+        sumaActual = sumaActual - dias[i - k] + dias[i];
+        
+        if (sumaActual > maxSuma) {
+            maxSuma = sumaActual;
+            mejorInicio = i - k + 1; // Índice del nuevo inicio de la ventana
+        }
+    }
+    
+    return { mejorInicio: mejorInicio + 1, maxSuma };
+}
+
+// --- 3. Par más Cercano con Dos Punteros O(n log n) ---
+function parMasCercano(catalogo, presupuesto) {
+    if (!catalogo || catalogo.length < 2) return null;
+    
+    // Paso 1: Ordenar los precios de menor a mayor O(n log n)
+    let ordenados = [...catalogo].sort((a, b) => a.precio - b.precio);
+    
+    let izquierda = 0;
+    let derecha = ordenados.length - 1;
+    let mejorPar = null;
+    let mejorSuma = -1;
+    
+    // Paso 2: Recorrer con dos punteros desde los extremos O(n)
+    while (izquierda < derecha) {
+        let suma = ordenados[izquierda].precio + ordenados[derecha].precio;
+        
+        if (suma <= presupuesto) {
+            if (suma > mejorSuma) {
+                mejorSuma = suma;
+                mejorPar = [ordenados[izquierda], ordenados[derecha]];
+            }
+            // Como la suma es válida pero queremos acercarnos más al presupuesto, movemos la izquierda hacia arriba
+            izquierda++;
+        } else {
+            // Si nos pasamos del presupuesto, movemos la derecha hacia abajo para bajar la suma
+            derecha--;
+        }
+    }
+    
+    return mejorPar ? { productos: mejorPar, total: mejorSuma } : null;
+}
 // --- Exportaciones ---
 module.exports = {
     comprasPorCliente,

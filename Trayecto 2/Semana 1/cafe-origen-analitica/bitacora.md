@@ -487,7 +487,7 @@ Reto 10 - Dia 3 -Semana 1
 
 
 
-Noviembre 28 - 2026: Campaña Fin de Año (Complementos y Frecuencias con Map)
+Noviembre 26 - 2026: Campaña Fin de Año (Complementos y Frecuencias con Map)
 
 
 
@@ -536,3 +536,47 @@ comboRegalo (Optimizada): Tiempo O(n) (una pasada con búsquedas O(1) en el Map)
 productoEstrellaPorCiudad: Tiempo O(n) y Espacio O(n) al agrupar contadores por ciudad y producto.
 
 primerClienteUnico: Tiempo O(n) (dos recorridos separados, sin anidar) y Espacio O(n) por el Map de frecuencias.
+
+
+
+Noviembre 26 - 2026: Ventana Deslizante y Dos Punteros para Campaña
+
+
+
+Optimizamos los reportes comerciales con dos técnicas:
+
+
+
+1. Ventana Deslizante (k = 7) en ventasDiarias [320, 410, 280, 390, 510, 620, 700, 300, ...]
+
+
+
+Posición 1 (Días 1-7): 320 + 410 + 280 + 390 + 510 + 620 + 700 = 3.230.
+
+Posición 2 (Días 2-8): 3.230 - 320 + 300 = 3.210.
+
+Posición 3 (Días 3-9): 3.210 - 410 + 290 = 3.090.
+
+
+
+2. Dos Punteros para Presupuesto $100.000 (parMasCercano)
+
+
+
+Con el catálogo ordenado de menor a mayor:
+
+Paso 1: izquierda ($18.000) + derecha ($120.000) = $138.000 (se pasa) -> baja derecha.
+
+Paso 2: izquierda ($18.000) + derecha ($95.000) = $113.000 (se pasa) -> baja derecha.
+
+Paso 3: izquierda ($18.000) + derecha ($79.000) = $97.000 (<= $100.000, válido) -> guarda $97.000 y sube izquierda hasta que se crucen los punteros.
+
+
+
+3. Complejidad Big O
+
+
+
+mejorSemana (Ventana Deslizante): Tiempo O(n) (una pasada inicial y deslizamiento con operaciones O(1)); Espacio O(1).
+
+parMasCercano (Dos Punteros): Tiempo O(n log n) (dominado por el .sort() frente al recorrido lineal O(n)); Espacio O(n) por copiar el catálogo antes de ordenar.
